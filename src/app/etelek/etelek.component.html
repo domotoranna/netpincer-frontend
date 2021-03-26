@@ -1,0 +1,23 @@
+<app-etterem-home></app-etterem-home>
+
+<mat-card *ngFor="let item of etelek" class="card" >
+    <mat-card-header>
+      <mat-card-title>{{item.name}}</mat-card-title>
+      
+    </mat-card-header>
+
+    <mat-card-content>
+      
+      <p>{{item.price}}</p>
+    </mat-card-content>
+    
+</mat-card>
+
+<!--
+<h2>Ételek</h2>
+<ul>
+    <li *ngFor="let etel of etelek" >
+        {{etel.name}}  {{etel.price}}
+    </li>
+</ul>
+-->
