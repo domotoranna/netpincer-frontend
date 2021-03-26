@@ -1,3 +1,4 @@
+import { RegisztracioService } from './../services/regisztracio.service';
 import { Nyitvatartas } from './model/nyitvatartas';
 import { Nap } from './model/nap';
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +11,7 @@ import { FormGroup, FormControl, FormArray, AbstractControl } from '@angular/for
 })
 export class EtteremRegisztralasaComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service: RegisztracioService) { }
 
   ngOnInit(): void {
   }
@@ -98,17 +99,6 @@ export class EtteremRegisztralasaComponent implements OnInit {
 
   submit(form: FormGroup){
 
-    
-    for(let i = 0; i < 7;i++){
-      if(true){   //ha adott meg a naphoz nyitvatartasi idot, ez meg nem mukodik
-        this.nyitvatartas.addNap(new Nap(0,8,9,18,19));
-      }
-      else{
-        this.nyitvatartas.addNap(null);
-      }
-      
-    }
-       
 
     let regisztracio = {
       Email: form.get('email').value,
@@ -117,10 +107,10 @@ export class EtteremRegisztralasaComponent implements OnInit {
       Leiras: form.get('leiras').value,
       Cim:
       {
-        Irsz: form.get('leiras').get('irsz').value,
-        Kozterulet: form.get('leiras').get('kozterulet').value,
-        Hazszam: form.get('leiras').get('hazszam').value,
-        Emelet_ajto: form.get('leiras').get('emeletajto').value
+        Irsz: form.get('cim').get('irsz').value,
+        Kozterulet: form.get('cim').get('kozterulet').value,
+        Hazszam: form.get('cim').get('hazszam').value,
+        Emelet_ajto: form.get('cim').get('emeletajto').value
       },
       Nyitvatartas: this.nyitvatartas,
       
@@ -130,8 +120,52 @@ export class EtteremRegisztralasaComponent implements OnInit {
       Szallitasi_ktsg: form.get('szallktg').value
     }
     
-    console.log(form.value);
     console.log(regisztracio);
+
+
+    let reg = {
+      Email: "finssdsdasom@csontok.hu",
+      "Jelszo": "teszt_jelszo",
+      "Nev": "Csontok",
+      "Leiras": "Innen csak csontokat lehet rendelni.",
+      "Cim":
+      {
+        "Irsz": 8200,
+        "Kozterulet": "Gyanús utca",
+        "Hazszam": "3.",
+        "Emelet_ajto": "1. em. 5. a."
+      },
+      "Nyitvatartas":
+      [
+        {
+          "NapID": 0,
+          "KonyhaNyit": 8,
+          "EtteremNyit": 9,
+          "EtteremZar": 20,
+          "KonyhaZar": 21
+        },
+        {
+          "NapID": 1,
+          "KonyhaNyit": 8,
+          "EtteremNyit": 9,
+          "EtteremZar": 20,
+          "KonyhaZar": 21
+        },
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "Cimke": null,
+      "Kep": null,
+      "Szallit": [8200, 8412, 8411, 8248, 8475],
+      "Szallitasi_ktsg": 800
+    }
+
+    this.service.etteremRegisztral(reg).subscribe( response => {
+      console.log(response);
+     });
   }
 
 }

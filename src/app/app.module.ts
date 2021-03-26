@@ -1,3 +1,5 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { RegisztracioService } from './services/regisztracio.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,6 +42,7 @@ import { EtelekComponent } from './etelek/etelek.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     MatToolbarModule,
         MatInputModule,
         MatIconModule,
@@ -68,7 +71,7 @@ import { EtelekComponent } from './etelek/etelek.component';
     ]),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [RegisztracioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
