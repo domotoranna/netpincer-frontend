@@ -3,6 +3,8 @@
     .bg {
       /* The image used */
       background-image: url('../../assets/FoodBackground.jpg');
+      background-attachment: fixed;
+      background-size: cover;
       
       height: 100%;
       margin: 0;
@@ -15,6 +17,11 @@
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
+
+
+      overflow-x: hidden;
+      overflow-y: scroll;
+
     }
 
     .bejelentkezes {
@@ -30,6 +37,7 @@
 
     .feherszoveg {
       color: white;
+      margin-top: 10px;
     }
 
     .btn-primary {
@@ -43,4 +51,19 @@
 
     .nav-link{
       color: white;
+    }
+
+    #cim {
+      margin-left: 20px;
+    }
+
+    input.form-control {
+      background: rgba(255, 255, 255, 0.379);
+      color: white;
+      border-width: 0ch;
+    }
+
+    input.warning {
+      border-color: red;
+      border-width: 2px;
     }

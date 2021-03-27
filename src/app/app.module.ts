@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EtelekComponent } from './etelek/etelek.component';
+import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { EtelekComponent } from './etelek/etelek.component';
     BejelentkezesComponent,
     EtteremRegisztralasaComponent,
     EtteremHomeComponent,
-    EtelekComponent
+    EtelekComponent,
+    VendegHomeComponent
   ],
   imports: [
     CommonModule,
@@ -60,6 +62,7 @@ import { EtelekComponent } from './etelek/etelek.component';
       { path: 'etteremreg', component: EtteremRegisztralasaComponent },      
       { path: 'etterem', component: EtteremHomeComponent },
       { path: 'etterem/etelek', component: EtelekComponent },
+      { path: 'vendeg', component: VendegHomeComponent },
 
      
 
