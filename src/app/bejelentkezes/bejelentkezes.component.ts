@@ -16,6 +16,7 @@ export class BejelentkezesComponent implements OnInit {
 
   //ezt le kell kérni szerverről hogy milyen típusú user
   belepesMint: string = "vendeg";
+  id: number;
 
   formBelep = new FormGroup({
     belepEmail: new FormControl(),
@@ -78,15 +79,16 @@ export class BejelentkezesComponent implements OnInit {
     this.belepesService.bejelentkezes(belepesAdatok).subscribe( response => {
       console.log(response);
       this.belepesMint = response.Tipus;
+      this.id = response.ID;
       console.log(this.belepesMint);
     });
 
     //megnézi hogy milyen user (étterem, vendég vagy futár)
     if(this.belepesMint == "Etterem"){
-      this.router.navigate(['/etterem']);
+      this.router.navigate(['/etterem',this.id]);
     }
     else if(this.belepesMint  == "RegisztraltVendeg"){
-      this.router.navigate(['/vendeg']);
+      this.router.navigate(['/vendeg',this.id]);
     }
     
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 
  
@@ -9,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EtteremHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
+
+  etteremId: number;
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      console.log(params);
+      this.etteremId = +params.get('id');
+    })
   }
 
 }

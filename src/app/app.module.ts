@@ -60,9 +60,9 @@ import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
       //empty path represents the home page = default route
       { path: '', component: BejelentkezesComponent },
       { path: 'etteremreg', component: EtteremRegisztralasaComponent },      
-      { path: 'etterem', component: EtteremHomeComponent },
-      { path: 'etterem/etelek', component: EtelekComponent },
-      { path: 'vendeg', component: VendegHomeComponent },
+      { path: 'etterem/:id', component: EtteremHomeComponent },
+      { path: 'etterem/:id/etelek', component: EtelekComponent,pathMatch: 'full' },
+      { path: 'vendeg/:id', component: VendegHomeComponent },
 
      
 

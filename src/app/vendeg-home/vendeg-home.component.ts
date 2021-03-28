@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vendeg-home',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VendegHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
+
+  vendegId: number;
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      console.log(params);
+      this.vendegId = +params.get('id');
+    })
   }
 
 }
