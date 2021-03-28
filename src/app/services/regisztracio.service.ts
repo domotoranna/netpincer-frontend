@@ -12,13 +12,13 @@ export class RegisztracioService {
 
   //  /regisztracio/etterem
   etteremRegisztral(regisztracio){
-    return this.http.post(this.url+'/etterem', JSON.stringify(regisztracio));
+    return this.http.post<{Message:string}>(this.url+'/etterem', JSON.stringify(regisztracio));
   }
 
   //  /helloworld
-  hw(){
-    return this.http.get(this.url+'/helloworld');
-  }
+  // hw(){
+  //   return this.http.get(this.url+'/helloworld');
+  // }
 
    //  /regisztracio/vendeg
    vendegRegisztral(regisztracio){

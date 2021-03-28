@@ -1,3 +1,5 @@
+import { EtelHozzaadasService } from './services/etel-hozzaadas.service';
+import { BelepesService } from './services/belepes.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RegisztracioService } from './services/regisztracio.service';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -28,6 +30,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EtelekComponent } from './etelek/etelek.component';
 import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
+import { KategoriaHozzaadasComponent } from './kategoria-hozzaadas/kategoria-hozzaadas.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,8 @@ import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
     EtteremRegisztralasaComponent,
     EtteremHomeComponent,
     EtelekComponent,
-    VendegHomeComponent
+    VendegHomeComponent,
+    KategoriaHozzaadasComponent
   ],
   imports: [
     CommonModule,
@@ -54,6 +59,7 @@ import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
         MatCheckboxModule,
         MatMenuModule,
         MatCardModule,
+        MatSnackBarModule,
     RouterModule.forRoot([ 
       // which component should be displayed when the address changes to a certain path
 
@@ -74,7 +80,7 @@ import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
     ]),
     BrowserAnimationsModule
   ],
-  providers: [RegisztracioService],
+  providers: [RegisztracioService, BelepesService ,EtelHozzaadasService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

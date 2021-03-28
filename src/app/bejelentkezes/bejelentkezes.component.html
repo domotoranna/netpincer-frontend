@@ -32,13 +32,22 @@
         <label for="belepEmail" class="feherszoveg">Email cím</label>
         <input type="email" class="form-control" id="belepEmail" formControlName="belepEmail">
       </div>
+      <div class="alert alert-danger" *ngIf="belepEmail.touched && !belepEmail.valid">
+        <div *ngIf="belepEmail.errors && belepEmail.errors.required">Nem adtál meg email címet.</div>              
+      </div>
+
       <div class="form-group">
         <label for="belepJelszo" class="feherszoveg">Jelszó</label>
         <input type="password" class="form-control" id="belepJelszo" formControlName="belepJelszo">
       </div>
+      <div class="alert alert-danger" *ngIf="belepJelszo.touched && !belepJelszo.valid">
+        <div *ngIf="belepJelszo.errors && belepJelszo.errors.required">Nem adtál meg jelszót.</div>              
+      </div>
       
-      <a ><button type="submit" class="btn btn-primary" (click)="submitBelep(formBelep)">Bejelentkezés</button></a>
+      <a ><button type="submit" class="btn btn-primary" [disabled]="!formBelep.valid" (click)="submitBelep(formBelep)">Bejelentkezés</button></a>
+      <div class="alert alert-danger sikertelen" *ngIf="!sikeresBelepes">Bejelentkezés sikertelen</div>
     </form>
+    
 
 
 

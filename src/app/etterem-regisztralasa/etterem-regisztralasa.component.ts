@@ -1,6 +1,9 @@
 import { RegisztracioService } from './../services/regisztracio.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, AbstractControl, Validators } from '@angular/forms';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-etterem-regisztralasa',
@@ -9,10 +12,11 @@ import { FormGroup, FormControl, FormArray, AbstractControl, Validators } from '
 })
 export class EtteremRegisztralasaComponent implements OnInit {
 
-  constructor(private service: RegisztracioService) { }
+  constructor(private service: RegisztracioService, private _snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
   }
+
 
   form = new FormGroup({
     
@@ -157,8 +161,23 @@ export class EtteremRegisztralasaComponent implements OnInit {
 
   }
 
+  visszairanyitas(){
 
+    this.openSnackBar('Sikeresen regisztráltál! Most vissza leszel irányítva a belépési oldalra.','OK');
+    
+    setTimeout(() => 
+     {
+         this.router.navigate(['/']);
+     },
+     5000);
+  }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message,action, {
+      duration: 4000
+    });
+  }
+  
  
 
   irszamHozzaad(irszam: HTMLInputElement){
@@ -206,7 +225,16 @@ export class EtteremRegisztralasaComponent implements OnInit {
     
     this.service.etteremRegisztral(regisztracio).subscribe( response => {
       console.log(response);
+      if(response.Message=="OK"){
+        this.visszairanyitas();
+      }      
+     }, error => {
+      this.openSnackBar("Regisztráció sikertelen","OK");
      });
+
+         
+
+  
   }
 
 }

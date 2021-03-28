@@ -12,6 +12,7 @@ export class BelepesService {
 
   //  /belepes
   bejelentkezes(belepesAdatok){
+    console.log('x');
     return this.http.post<{ID: number,Tipus: string}>(this.url+'/belepes', JSON.stringify(belepesAdatok));
   }
 }

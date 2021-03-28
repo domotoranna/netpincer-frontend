@@ -15,12 +15,13 @@ export class BejelentkezesComponent implements OnInit {
   constructor(private router: Router, private regService: RegisztracioService, private belepesService: BelepesService) { }
 
   //ezt le kell kérni szerverről hogy milyen típusú user
-  belepesMint: string = "vendeg";
+  belepesMint: string = "";
   id: number;
+  sikeresBelepes: boolean = true ;
 
   formBelep = new FormGroup({
-    belepEmail: new FormControl(),
-    belepJelszo: new FormControl()
+    belepEmail: new FormControl('',Validators.required),
+    belepJelszo: new FormControl('',Validators.required)
   });
 
   formReg = new FormGroup({
@@ -66,6 +67,13 @@ export class BejelentkezesComponent implements OnInit {
     return this.formReg.get('tel')
   }
 
+  get belepEmail(){
+    return this.formBelep.get('belepEmail');
+  }
+  get belepJelszo(){
+    return this.formBelep.get('belepJelszo');
+  }
+
   ngOnInit(): void {
   }
 
@@ -76,20 +84,30 @@ export class BejelentkezesComponent implements OnInit {
       Jelszo: formBelep.get('belepJelszo').value
     }
     console.log(belepesAdatok);
+
+
     this.belepesService.bejelentkezes(belepesAdatok).subscribe( response => {
       console.log(response);
       this.belepesMint = response.Tipus;
       this.id = response.ID;
       console.log(this.belepesMint);
+      this.sikeresBelepes = true;
+
+      //megnézi hogy milyen user (étterem, vendég vagy futár)
+      if(this.belepesMint == "Etterem"){
+        this.router.navigate(['/etterem',this.id]);
+      }
+      else if(this.belepesMint  == "RegisztraltVendeg"){
+        this.router.navigate(['/vendeg',this.id]);
+      }
+
+
+    },error => {
+      console.log(error);
+      this.sikeresBelepes = false;
     });
 
-    //megnézi hogy milyen user (étterem, vendég vagy futár)
-    if(this.belepesMint == "Etterem"){
-      this.router.navigate(['/etterem',this.id]);
-    }
-    else if(this.belepesMint  == "RegisztraltVendeg"){
-      this.router.navigate(['/vendeg',this.id]);
-    }
+    
     
   }
 
