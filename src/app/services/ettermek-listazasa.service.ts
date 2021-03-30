@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Etterem } from '../ettermek/model/etterem';
 
 @Injectable({
   providedIn: 'root'
 })
-export class BelepesService {
+export class EttermekListazasaService {
 
   constructor(private http: HttpClient) { }
 
   private url = 'http://localhost:3000';
 
-  //  /belepes
-  bejelentkezes(belepesAdatok){
-    return this.http.post<{ID: number,Tipus: string}>(this.url+'/belepes', JSON.stringify(belepesAdatok));
+  ettermekListazasa(parameterek){
+    return this.http.post<{Ettermek: Etterem[]}>(this.url+'/etterem',JSON.stringify(parameterek));
   }
 }

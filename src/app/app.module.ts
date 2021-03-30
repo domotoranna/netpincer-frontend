@@ -1,4 +1,4 @@
-import { EtelHozzaadasService } from './services/etel-hozzaadas.service';
+import { EtelService } from './services/etel.service';
 import { BelepesService } from './services/belepes.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RegisztracioService } from './services/regisztracio.service';
@@ -32,6 +32,7 @@ import { EtelekComponent } from './etelek/etelek.component';
 import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
 import { KategoriaHozzaadasComponent } from './kategoria-hozzaadas/kategoria-hozzaadas.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { EttermekComponent } from './ettermek/ettermek.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     EtteremHomeComponent,
     EtelekComponent,
     VendegHomeComponent,
-    KategoriaHozzaadasComponent
+    KategoriaHozzaadasComponent,
+    EttermekComponent
   ],
   imports: [
     CommonModule,
@@ -69,6 +71,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
       { path: 'etterem/:id', component: EtteremHomeComponent },
       { path: 'etterem/:id/etelek', component: EtelekComponent,pathMatch: 'full' },
       { path: 'vendeg/:id', component: VendegHomeComponent },
+      { path: 'vendeg/:id/ettermek', component: EttermekComponent,pathMatch: 'full' },
 
      
 
@@ -80,7 +83,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ]),
     BrowserAnimationsModule
   ],
-  providers: [RegisztracioService, BelepesService ,EtelHozzaadasService],
+  providers: [RegisztracioService, BelepesService ,EtelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,44 +4,61 @@
 <!-- nev, ar , kep , leiras , etteremid?-->
 
 <form [formGroup]="form" (ngSubmit)="submit(form)">
-
+  <h2>Új étel felvitele</h2>
   <div class="form-group">
 
     <label for="kategoria">Kategória</label><br>
     <select id="kategoria" formControlName="kategoria" class="form-control">
       <option></option>
-      <option *ngFor="let item of categories">{{item.nev}}</option>
+      <option *ngFor="let item of categories" [value]="item.CimkeID">{{item.Nev}}</option>
     </select>
-    <div class="alert alert-danger" *ngIf="kategoria.touched && !kategoria.valid"> 
-      <div *ngIf="kategoria.errors && kategoria.errors.required">Nem adtad meg a kategóriát.</div>           
-    </div>   
+    <div class="alert alert-danger" *ngIf="kategoria.touched && !kategoria.valid">
+      <div *ngIf="kategoria.errors && kategoria.errors.required">Nem adtad meg a kategóriát.</div>
+    </div>
 
-      <label for="nev">Étel neve</label><br>
-      <input id="nev" formControlName="nev"  type="text" class="form-control">
-      <div class="alert alert-danger" *ngIf="nev.touched && !nev.valid"> 
-        <div *ngIf="nev.errors && nev.errors.required">Nem adtad meg az étel nevét.</div>           
-      </div>
-      
+    <label for="nev">Étel neve</label><br>
+    <input id="nev" formControlName="nev" type="text" class="form-control">
+    <div class="alert alert-danger" *ngIf="nev.touched && !nev.valid">
+      <div *ngIf="nev.errors && nev.errors.required">Nem adtad meg az étel nevét.</div>
+    </div>
 
-      <label for="ar">Ár</label><br>
-      <input id="ar" formControlName="ar"  type="number" class="form-control">
-      <div class="alert alert-danger" *ngIf="ar.touched && !ar.valid"> 
-        <div *ngIf="ar.errors && ar.errors.required">Nem adtad meg az árat.</div>           
-      </div>
 
-      <label for="leiras">Leírás</label>
-      <p>Adj meg egy rövid leírást az ételről</p>
-      <input id="leiras" formControlName="leiras"  type="text" class="form-control">
-      <div class="alert alert-danger" *ngIf="leiras.touched && !leiras.valid"> 
-        <div *ngIf="leiras.errors && leiras.errors.required">Nem adtad meg a leírást.</div>           
-      </div>
+    <label for="ar">Ár</label><br>
+    <input id="ar" formControlName="ar" type="number" class="form-control">
+    <div class="alert alert-danger" *ngIf="ar.touched && !ar.valid">
+      <div *ngIf="ar.errors && ar.errors.required">Nem adtad meg az árat.</div>
+    </div>
 
-      <label for="allergen">Allergén összetevő</label><!-- lehet újat megadni ????  KIVÁLASZTÓS ??-->
-      <input id="allergen" formControlName="allergen"  type="text" class="form-control">
-      
-      
+    <label for="leiras">Leírás</label>
+    <p>Adj meg egy rövid leírást az ételről</p>
+    <input id="leiras" formControlName="leiras" type="text" class="form-control">
+    <div class="alert alert-danger" *ngIf="leiras.touched && !leiras.valid">
+      <div *ngIf="leiras.errors && leiras.errors.required">Nem adtad meg a leírást.</div>
+    </div>
+
+    <!--<label for="allergen">Allergén összetevő</label> lehet újat megadni ????  KIVÁLASZTÓS ??
+      <input id="allergen" formControlName="allergen"  type="text" class="form-control">-->
+    <br>
+    <select formControlName="allergenek" name="allergenek" id="allergenek" multiple class="form-control">
+      <option *ngFor="let item of allergenek_tomb" [value]="item.CimkeID">{{item.Nev}}</option>
+    </select>
+
+
+    <label for="akcio">Akció</label>
+    <!--ezt még nem tudom hogy lesz, de nem kötelező megadni-->
+    <input id="akcio" formControlName="akcio" type="text" class="form-control">
+
+    <br>
+    <h6>Ha ez az étel folyamatosan elérhető, hagyd ki ezeket a mezőket</h6>
+    <label for="ettol">Elérhető ettől</label>
+    <input id="ettol" formControlName="ettol" type="number" class="form-control">
+
+    <label for="eddig">Elérhető eddig</label>
+    <input id="eddig" formControlName="eddig" type="number" class="form-control">
+
+
   </div>
-<button type="button" class="btn btn-primary" [disabled]="!form.valid" (click)="submit(form)">Hozzáadás</button>
+  <button type="button" class="btn btn-primary" [disabled]="!form.valid" (click)="submit(form)">Hozzáadás</button>
 </form>
 
 
@@ -49,13 +66,20 @@
 
 
 
-<mat-card *ngFor="let item of etelek" class="card" >
-    <mat-card-header>
-      <mat-card-title>{{item.name}}</mat-card-title>
-    </mat-card-header>
+<mat-card *ngFor="let item of etelek" class="card">
+  <mat-card-header>
+    <mat-card-title>{{item.Nev}}</mat-card-title>
+  </mat-card-header>
 
-    <mat-card-content>
-      <p>{{item.price}}</p>
-    </mat-card-content>
-    
+  <mat-card-content>
+    <p>Leírás: {{item.Leiras}}</p>
+  </mat-card-content>
+
+  <mat-card-content>
+    <p>Ár: {{item.Ar}}</p>
+  </mat-card-content>
+
+  <button class="btn btn-primary">Módosítás</button>
+
 </mat-card>
+<br><br>

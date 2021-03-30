@@ -115,6 +115,20 @@ export class EtteremRegisztralasaComponent implements OnInit {
   //nyitvatartas = new Nyitvatartas();
   nyitvatartas: any = [];
 
+  imgUrl: string | ArrayBuffer;
+
+  onSelectImage(event) { // called each time file input changes
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+        this.imgUrl = event.target.result;
+      }
+    }
+}
+
   getNyitvaNapok(){
     if(+this.form.get('nyitvatartas').get('hetfoKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('hetfoEttNyit').value == 0 || +this.form.get('nyitvatartas').get('hetfoEttZar').value == 0 || +this.form.get('nyitvatartas').get('hetfoKonyhaZar').value == 0 ){
       this.nyitvatartas[0] = null;

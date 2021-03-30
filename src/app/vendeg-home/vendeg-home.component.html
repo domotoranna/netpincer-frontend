@@ -5,7 +5,7 @@
       <mat-toolbar-row>
         <div>
           <a mat-button> Főoldal </a>
-          <a mat-button > Éttermek </a>
+          <a mat-button [routerLink]="['/vendeg',vendegId,'ettermek']"> Éttermek </a>
           
           <a mat-button> Profil </a>
           <a mat-button> Kijelentkezés </a>
@@ -20,4 +20,4 @@
  
   </div>
 
-<h1>This is the homepage of vendég with the id: {{vendegId}}</h1>
+<h1>This is the homepage of vendég with the id: {{vendegId}} (ezt majd innen kiveszem csak az id ellenőrzése miatt kell)</h1>

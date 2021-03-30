@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EtelHozzaadasService } from './etel-hozzaadas.service';
+import { EtelService } from './etel.service';
 
-describe('EtelHozzaadasService', () => {
-  let service: EtelHozzaadasService;
+describe('EtelService', () => {
+  let service: EtelService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EtelHozzaadasService);
+    service = TestBed.inject(EtelService);
   });
 
   it('should be created', () => {

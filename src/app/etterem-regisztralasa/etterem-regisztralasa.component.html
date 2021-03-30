@@ -281,7 +281,10 @@
             <input id="cimke" formControlName="cimke" type="text" class="form-control">
 
             <br>
-            ?kép feltöltése?
+            <label for="etteremKep">Kép feltöltése: </label><br>
+            <input type="file" name="etteremKep" id="etteremKep" (change)="onSelectImage($event)" />
+            <br>A kiválasztott kép:
+            <img [src]="imgUrl" height="200"> <br/>
             <br><br>
 
             Add meg a települések irányítószámát, ahova az éttermed majd kiszállít

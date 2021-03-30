@@ -1,0 +1,21 @@
+<app-vendeg-home></app-vendeg-home>
+
+<div>
+  <h2>A településedre kiszállító éttermek:</h2>
+  <p>ide jön majd a szűrés, egyenlőre kilistázza az összes éttermet a vendég irányítószámával</p>
+</div>
+<mat-card *ngFor="let etterem of ettermek" class="card">
+  <mat-card-header>
+    <mat-card-title>Név: {{etterem.Nev}}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p>Leírás: {{etterem.Leiras}}</p>
+  </mat-card-content>
+
+  <mat-card-content>
+    <p>Szállítási költség: {{etterem.Szallitasi_ktsg}}</p>
+  </mat-card-content>
+
+
+</mat-card>

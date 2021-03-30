@@ -2,7 +2,7 @@ import { Etel } from './model/etel';
 
 
 export const ETELEK: Etel[] = [
-    {
+/*     {
         id: 1,
         name: "Palacsinta",
         price: 250,
@@ -18,5 +18,5 @@ export const ETELEK: Etel[] = [
         name: "Pörkölt",
         price: 900,
        
-    },
+    }, */
 ];
