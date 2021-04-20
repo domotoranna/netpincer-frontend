@@ -22,7 +22,12 @@ export class RegisztracioService {
 
    //  /regisztracio/vendeg
    vendegRegisztral(regisztracio){
-    return this.http.post(this.url+'/vendeg', JSON.stringify(regisztracio));
+    return this.http.post<{Message: string}>(this.url+'/vendeg', JSON.stringify(regisztracio));
+  }
+
+  //  /regisztracio/futar
+  futarRegisztral(regisztracio){
+    return this.http.post<{Message: string}>(this.url+'/futar', JSON.stringify(regisztracio));
   }
 
 

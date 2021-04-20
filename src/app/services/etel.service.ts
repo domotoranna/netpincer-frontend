@@ -21,8 +21,25 @@ export class EtelService {
     return this.http.get<{Etelek: Etel[]}>(this.url+'/etterem/'+etteremId);
   }
 
-  getKategoriak(){    
-    console.log('x');
+
+  getEtelCimkek(){    
     return this.http.get<{EtelCimke: Kategoria[]}>(this.url+'/cimke/etel');
+  }
+
+  getEtteremCimkek(){
+    return this.http.get<{EtteremCimke: Kategoria[]}>(this.url+'/cimke/etterem');
+  }
+
+  deleteEtel(etelID: number){
+    return this.http.post(this.url+'/etterem/etel/torles/'+etelID,null);
+  }
+  
+  kategoriaHozzadas(uj_kategoria){
+    console.log('x');
+    return this.http.post(this.url+'/cimke/etel',JSON.stringify(uj_kategoria));
+  }
+
+  kategoriaTorles(id: number){
+    return this.http.post(this.url+'/cimke/etel/torles/'+id,null);
   }
 }

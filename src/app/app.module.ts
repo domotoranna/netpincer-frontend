@@ -33,6 +33,12 @@ import { VendegHomeComponent } from './vendeg-home/vendeg-home.component';
 import { KategoriaHozzaadasComponent } from './kategoria-hozzaadas/kategoria-hozzaadas.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EttermekComponent } from './ettermek/ettermek.component';
+import { SafePipe } from './safe.pipe';
+import { FutarRegisztralasComponent } from './futar-regisztralas/futar-regisztralas.component';
+import { FutarHomeComponent } from './futar-home/futar-home.component';
+import { EtelekRendelesComponent } from './etelek-rendeles/etelek-rendeles.component';
+import { KosarComponent } from './kosar/kosar.component';
+
 
 @NgModule({
   declarations: [
@@ -43,7 +49,12 @@ import { EttermekComponent } from './ettermek/ettermek.component';
     EtelekComponent,
     VendegHomeComponent,
     KategoriaHozzaadasComponent,
-    EttermekComponent
+    EttermekComponent,
+    SafePipe,
+    FutarRegisztralasComponent,
+    FutarHomeComponent,
+    EtelekRendelesComponent,
+    KosarComponent
   ],
   imports: [
     CommonModule,
@@ -69,18 +80,26 @@ import { EttermekComponent } from './ettermek/ettermek.component';
       { path: '', component: BejelentkezesComponent },
       { path: 'etteremreg', component: EtteremRegisztralasaComponent },      
       { path: 'etterem/:id', component: EtteremHomeComponent },
-      { path: 'etterem/:id/etelek', component: EtelekComponent,pathMatch: 'full' },
+      { path: 'etterem/:id/etelek', component: EtelekComponent, pathMatch: 'full' },
       { path: 'vendeg/:id', component: VendegHomeComponent },
-      { path: 'vendeg/:id/ettermek', component: EttermekComponent,pathMatch: 'full' },
+      { path: 'vendeg/:id/ettermek', component: EttermekComponent, pathMatch: 'full' },
+      { path: 'etterem/:id/kategoriak', component: KategoriaHozzaadasComponent, pathMatch: 'full' },
+      { path: 'futarreg', component: FutarRegisztralasComponent },
+      { path: 'futar/:id', component: FutarHomeComponent },
+      { path: 'vendeg/:vendegId/ettermek/:etteremId/rendeles', component: EtelekRendelesComponent, pathMatch: 'full'},
+      { path: 'vendeg/:vendegId/kosar', component: KosarComponent, pathMatch: 'full'},
+      
 
      
 
-
+      
       //wildcard, catches any urls, ennek kell lennie az utolsónak
       { path: '**', component: NotFoundComponent }
 
 
-    ]),
+    ],{scrollPositionRestoration: 'enabled'}
+    
+    ),
     BrowserAnimationsModule
   ],
   providers: [RegisztracioService, BelepesService ,EtelService],

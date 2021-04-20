@@ -1,8 +1,10 @@
+import { EtelService } from './../services/etel.service';
 import { RegisztracioService } from './../services/regisztracio.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, AbstractControl, Validators } from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Kategoria } from '../etelek/model/kategoria';
 
 
 @Component({
@@ -12,23 +14,27 @@ import { Router } from '@angular/router';
 })
 export class EtteremRegisztralasaComponent implements OnInit {
 
-  constructor(private service: RegisztracioService, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(private service: RegisztracioService, private _snackBar: MatSnackBar, private router: Router, private etelService: EtelService) { }
 
   ngOnInit(): void {
+    this.etelService.getEtteremCimkek().subscribe( response => {
+      this.etteremCimkek = response.EtteremCimke;
+    })
+    
   }
 
 
   form = new FormGroup({
-    
-      email: new FormControl('',Validators.required),
-      jelszo: new FormControl('',Validators.required),
-      nev: new FormControl('',Validators.required),
-      leiras: new FormControl('',Validators.required),
-    
+
+    email: new FormControl('', Validators.required),
+    jelszo: new FormControl('', Validators.required),
+    nev: new FormControl('', Validators.required),
+    leiras: new FormControl('', Validators.required),
+
     cim: new FormGroup({
-      irsz: new FormControl('',Validators.required),
-      kozterulet: new FormControl('',Validators.required),
-      hazszam: new FormControl('',Validators.required),
+      irsz: new FormControl('', Validators.required),
+      kozterulet: new FormControl('', Validators.required),
+      hazszam: new FormControl('', Validators.required),
       emeletajto: new FormControl(),
     }),
     nyitvatartas: new FormGroup({
@@ -67,150 +73,145 @@ export class EtteremRegisztralasaComponent implements OnInit {
       vasKonyhaNyit: new FormControl(),
       vasKonyhaZar: new FormControl(),
 
-     
-    }),
 
-      cimke: new FormControl(),
-      irszamok: new FormArray([]),
-      szallktg: new FormControl() 
-    
+    }),    
+    cimke: new FormControl(),
+    etteremKep: new FormControl(),
+    irszamok: new FormArray([]),
+    szallktg: new FormControl()
+
 
   });
 
   get irszamok() {
     return this.form.get('irszamok') as FormArray;
   }
-  get email(){
+  get email() {
     return this.form.get('email');
   }
-  get jelszo(){
+  get jelszo() {
     return this.form.get('jelszo');
   }
-  get nev(){
+  get nev() {
     return this.form.get('nev');
   }
-  get leiras(){
+  get leiras() {
     return this.form.get('leiras');
   }
-  get irsz(){
+  get irsz() {
     return this.form.get('cim').get('irsz');
   }
-  get kozterulet(){
+  get kozterulet() {
     return this.form.get('cim').get('kozterulet');
   }
-  get hazszam(){
+  get hazszam() {
     return this.form.get('cim').get('hazszam');
-  }  
-  get emeletajto(){
+  }
+  get emeletajto() {
     return this.form.get('cim').get('emeletajto');
   }
-  get cim(){
+  get cim() {
     return this.form.get('cim');
   }
+  get etteremKep(){
+    return this.form.get('etteremKep');
+  }
 
-  napok: string[] = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök','Péntek','Szombat','Vasárnap'];
+  napok: string[] = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
 
-  orak: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+  orak: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
-  //nyitvatartas = new Nyitvatartas();
+  etteremCimkek: Kategoria[] = [];
+  
   nyitvatartas: any = [];
 
-  imgUrl: string | ArrayBuffer;
+  imgUrl: string;
 
-  onSelectImage(event) { // called each time file input changes
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
+  onSelectImage() {
+    this.imgUrl = this.form.get('etteremKep').value;
+  }
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
-
-      reader.onload = (event) => { // called once readAsDataURL is completed
-        this.imgUrl = event.target.result;
-      }
-    }
-}
-
-  getNyitvaNapok(){
-    if(+this.form.get('nyitvatartas').get('hetfoKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('hetfoEttNyit').value == 0 || +this.form.get('nyitvatartas').get('hetfoEttZar').value == 0 || +this.form.get('nyitvatartas').get('hetfoKonyhaZar').value == 0 ){
+  getNyitvaNapok() {
+    if (+this.form.get('nyitvatartas').get('hetfoKonyhaNyit').value == 0 || +this.form.get('nyitvatartas').get('hetfoEttNyit').value == 0 || +this.form.get('nyitvatartas').get('hetfoEttZar').value == 0 || +this.form.get('nyitvatartas').get('hetfoKonyhaZar').value == 0) {
       this.nyitvatartas[0] = null;
     }
-    else{
-      this.nyitvatartas[0]={ "NapID":0, "KonyhaNyit":+this.form.get('nyitvatartas').get('hetfoKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('hetfoEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('hetfoEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('hetfoKonyhaZar').value};
+    else {
+      this.nyitvatartas[0] = { "NapID": 0, "KonyhaNyit": +this.form.get('nyitvatartas').get('hetfoKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('hetfoEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('hetfoEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('hetfoKonyhaZar').value };
     }
-    if(+this.form.get('nyitvatartas').get('keddKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('keddEttNyit').value == 0 || +this.form.get('nyitvatartas').get('keddEttZar').value == 0 || +this.form.get('nyitvatartas').get('keddKonyhaZar').value == 0 ){
+    if (+this.form.get('nyitvatartas').get('keddKonyhaNyit').value == 0 || +this.form.get('nyitvatartas').get('keddEttNyit').value == 0 || +this.form.get('nyitvatartas').get('keddEttZar').value == 0 || +this.form.get('nyitvatartas').get('keddKonyhaZar').value == 0) {
       this.nyitvatartas[1] = null;
     }
-    else{
-      this.nyitvatartas[1] = { "NapID":1,"KonyhaNyit": +this.form.get('nyitvatartas').get('keddKonyhaNyit').value, "EtteremNyit":+this.form.get('nyitvatartas').get('keddEttNyit').value, "EtteremZar":+this.form.get('nyitvatartas').get('keddEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('keddKonyhaZar').value };
+    else {
+      this.nyitvatartas[1] = { "NapID": 1, "KonyhaNyit": +this.form.get('nyitvatartas').get('keddKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('keddEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('keddEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('keddKonyhaZar').value };
     }
-    if(+this.form.get('nyitvatartas').get('szerdaKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('szerdaEttNyit').value == 0 || +this.form.get('nyitvatartas').get('szerdaEttZar').value == 0 || +this.form.get('nyitvatartas').get('szerdaKonyhaZar').value == 0 ){
+    if (+this.form.get('nyitvatartas').get('szerdaKonyhaNyit').value == 0 || +this.form.get('nyitvatartas').get('szerdaEttNyit').value == 0 || +this.form.get('nyitvatartas').get('szerdaEttZar').value == 0 || +this.form.get('nyitvatartas').get('szerdaKonyhaZar').value == 0) {
       this.nyitvatartas[2] = null;
     }
-    else{
-      this.nyitvatartas[2] = { "NapID":2,"KonyhaNyit": +this.form.get('nyitvatartas').get('szerdaKonyhaNyit').value, "EtteremNyit":+this.form.get('nyitvatartas').get('szerdaEttNyit').value, "EtteremZar":+this.form.get('nyitvatartas').get('szerdaEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('szerdaKonyhaZar').value };
+    else {
+      this.nyitvatartas[2] = { "NapID": 2, "KonyhaNyit": +this.form.get('nyitvatartas').get('szerdaKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('szerdaEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('szerdaEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('szerdaKonyhaZar').value };
     }
-    if(+this.form.get('nyitvatartas').get('csutKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('csutEttNyit').value == 0 || +this.form.get('nyitvatartas').get('csutEttZar').value == 0 || +this.form.get('nyitvatartas').get('csutKonyhaZar').value == 0 ){
+    if (+this.form.get('nyitvatartas').get('csutKonyhaNyit').value == 0 || +this.form.get('nyitvatartas').get('csutEttNyit').value == 0 || +this.form.get('nyitvatartas').get('csutEttZar').value == 0 || +this.form.get('nyitvatartas').get('csutKonyhaZar').value == 0) {
       this.nyitvatartas[3] = null;
     }
-    else{
-      this.nyitvatartas[3] = { "NapID":3,"KonyhaNyit": +this.form.get('nyitvatartas').get('csutKonyhaNyit').value, "EtteremNyit":+this.form.get('nyitvatartas').get('csutEttNyit').value, "EtteremZar":+this.form.get('nyitvatartas').get('csutEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('csutKonyhaZar').value };
+    else {
+      this.nyitvatartas[3] = { "NapID": 3, "KonyhaNyit": +this.form.get('nyitvatartas').get('csutKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('csutEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('csutEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('csutKonyhaZar').value };
     }
-    if(+this.form.get('nyitvatartas').get('pentKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('pentEttNyit').value == 0 || +this.form.get('nyitvatartas').get('pentEttZar').value == 0 || +this.form.get('nyitvatartas').get('pentKonyhaZar').value == 0 ){
+    if (+this.form.get('nyitvatartas').get('pentKonyhaNyit').value == 0 || +this.form.get('nyitvatartas').get('pentEttNyit').value == 0 || +this.form.get('nyitvatartas').get('pentEttZar').value == 0 || +this.form.get('nyitvatartas').get('pentKonyhaZar').value == 0) {
       this.nyitvatartas[4] = null;
     }
-    else{
-      this.nyitvatartas[4] = { "NapID":4,"KonyhaNyit": +this.form.get('nyitvatartas').get('pentKonyhaNyit').value, "EtteremNyit":+this.form.get('nyitvatartas').get('pentEttNyit').value, "EtteremZar":+this.form.get('nyitvatartas').get('pentEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('pentKonyhaZar').value };
+    else {
+      this.nyitvatartas[4] = { "NapID": 4, "KonyhaNyit": +this.form.get('nyitvatartas').get('pentKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('pentEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('pentEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('pentKonyhaZar').value };
     }
-    if(+this.form.get('nyitvatartas').get('szoKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('szoEttNyit').value == 0 || +this.form.get('nyitvatartas').get('szoEttZar').value == 0 || +this.form.get('nyitvatartas').get('szoKonyhaZar').value == 0 ){
+    if (+this.form.get('nyitvatartas').get('szoKonyhaNyit').value == 0 || +this.form.get('nyitvatartas').get('szoEttNyit').value == 0 || +this.form.get('nyitvatartas').get('szoEttZar').value == 0 || +this.form.get('nyitvatartas').get('szoKonyhaZar').value == 0) {
       this.nyitvatartas[5] = null;
     }
-    else{
-      this.nyitvatartas[5] = { "NapID":5,"KonyhaNyit": +this.form.get('nyitvatartas').get('szoKonyhaNyit').value, "EtteremNyit":+this.form.get('nyitvatartas').get('szoEttNyit').value, "EtteremZar":+this.form.get('nyitvatartas').get('szoEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('szoKonyhaZar').value };
+    else {
+      this.nyitvatartas[5] = { "NapID": 5, "KonyhaNyit": +this.form.get('nyitvatartas').get('szoKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('szoEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('szoEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('szoKonyhaZar').value };
     }
-    if(+this.form.get('nyitvatartas').get('vasKonyhaNyit').value == 0 ||  +this.form.get('nyitvatartas').get('vasEttNyit').value == 0 || +this.form.get('nyitvatartas').get('vasEttZar').value == 0 || +this.form.get('nyitvatartas').get('vasKonyhaZar').value == 0 ){
+    if (+this.form.get('nyitvatartas').get('vasKonyhaNyit').value == 0 || +this.form.get('nyitvatartas').get('vasEttNyit').value == 0 || +this.form.get('nyitvatartas').get('vasEttZar').value == 0 || +this.form.get('nyitvatartas').get('vasKonyhaZar').value == 0) {
       this.nyitvatartas[6] = null;
     }
-    else{
-      this.nyitvatartas[6] = { "NapID":6,"KonyhaNyit": +this.form.get('nyitvatartas').get('vasKonyhaNyit').value, "EtteremNyit":+this.form.get('nyitvatartas').get('vasEttNyit').value, "EtteremZar":+this.form.get('nyitvatartas').get('vasEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('vasKonyhaZar').value };
+    else {
+      this.nyitvatartas[6] = { "NapID": 6, "KonyhaNyit": +this.form.get('nyitvatartas').get('vasKonyhaNyit').value, "EtteremNyit": +this.form.get('nyitvatartas').get('vasEttNyit').value, "EtteremZar": +this.form.get('nyitvatartas').get('vasEttZar').value, "KonyhaZar": +this.form.get('nyitvatartas').get('vasKonyhaZar').value };
     }
 
   }
 
-  visszairanyitas(){
+  visszairanyitas() {
 
-    this.openSnackBar('Sikeresen regisztráltál! Most vissza leszel irányítva a belépési oldalra.','OK');
-    
-    setTimeout(() => 
-     {
-         this.router.navigate(['/']);
-     },
-     5000);
+    this.openSnackBar('Sikeresen regisztráltál! Most vissza leszel irányítva a belépési oldalra.', 'OK');
+
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    },
+      5000);
   }
 
   openSnackBar(message: string, action: string) {
-    this._snackBar.open(message,action, {
+    this._snackBar.open(message, action, {
       duration: 4000
     });
   }
-  
- 
 
-  irszamHozzaad(irszam: HTMLInputElement){
+
+
+  irszamHozzaad(irszam: HTMLInputElement) {
     (this.irszamok as FormArray).push(new FormControl(irszam.value));
     irszam.value = '';
   }
 
-  irszamEltavolit(irsz: AbstractControl){
+  irszamEltavolit(irsz: AbstractControl) {
     let index = this.irszamok.controls.indexOf(irsz);
     this.irszamok.removeAt(index);
   }
 
-  submit(form: FormGroup){
+  submit(form: FormGroup) {
 
     this.getNyitvaNapok();
 
-    var iranyitoszamok: number[] = []
-    for(let control of (form.get('irszamok') as FormArray).controls){
-      iranyitoszamok.push(+control.value);
+    var iranyitoszamok: string[] = []
+    for (let control of (form.get('irszamok') as FormArray).controls) {
+      iranyitoszamok.push(control.value);
     }
 
     let regisztracio = {
@@ -227,28 +228,28 @@ export class EtteremRegisztralasaComponent implements OnInit {
       },
 
       Nyitvatartas: this.nyitvatartas,
-      
+
       Cimke: form.get('cimke').value,
-      Kep: null,
+      Kep: form.get('etteremKep').value,
       Szallit: iranyitoszamok,
       Szallitasi_ktsg: form.get('szallktg').value
     }
-    
+
     console.log(regisztracio);
 
-    
-    this.service.etteremRegisztral(regisztracio).subscribe( response => {
+
+    this.service.etteremRegisztral(regisztracio).subscribe(response => {
       console.log(response);
-      if(response.Message=="OK"){
+      if (response.Message == "OK") {
         this.visszairanyitas();
-      }      
-     }, error => {
-      this.openSnackBar("Regisztráció sikertelen","OK");
-     });
+      }
+    }, error => {
+      this.openSnackBar("Regisztráció sikertelen", "OK");
+    });
 
-         
 
-  
+
+
   }
 
 }

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EtelService } from './../services/etel.service';
 import { ETELEK } from './etelek.storage';
 import { Etel } from './model/etel';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, resolveForwardRef } from '@angular/core';
 import { FormGroup, FormControl, FormArray, AbstractControl, Validators } from '@angular/forms';
 
 @Component({
@@ -24,24 +24,19 @@ export class EtelekComponent implements OnInit {
 
   categories: Kategoria[] = [];
 
-  allergenek_tomb: Kategoria[] = [{
-    CimkeID: 6,
-    Nev: "Glutén",
-    Tipus: "Allergén"
-  }, {
-    CimkeID: 7,
-    Nev: "Laktóz",
-    Tipus: "Allergén"
-  }];
+  imgUrl: string;
+
+  allergenek_tomb: Kategoria[] = [];
 
   form = new FormGroup({
 
     kategoria: new FormControl('', Validators.required),
     nev: new FormControl('', Validators.required),
     ar: new FormControl('', Validators.required),
+    etelKep: new FormControl(),
     leiras: new FormControl('', Validators.required),
     allergenek: new FormControl(),
-    akcio: new FormControl(),
+    //akcio: new FormControl(),
     ettol: new FormControl(),
     eddig: new FormControl()
 
@@ -57,6 +52,10 @@ export class EtelekComponent implements OnInit {
     this.etelekLekerese();    
   }
 
+  onSelectImage() {
+    this.imgUrl = this.form.get('etelKep').value;
+  }
+
   etelekLekerese() {
     this.etelService.getEtelek(this.etteremId).subscribe(response => {
       //itt kell a tömbnek értékül adni ami visszajön a kérésből
@@ -65,7 +64,7 @@ export class EtelekComponent implements OnInit {
   }
 
   kategoriakLekerese() {
-    this.etelService.getKategoriak().subscribe(
+    this.etelService.getEtelCimkek().subscribe(
       response => {
         response.EtelCimke.forEach(element => {
           
@@ -80,7 +79,6 @@ export class EtelekComponent implements OnInit {
       }
     )
   }
-
 
 
 
@@ -99,16 +97,24 @@ export class EtelekComponent implements OnInit {
   get allergen() {
     return this.form.get('alergen');
   }
+  get etelKep(){
+    return this.form.get('etelKep');
+  }
+
+  etelTorlese(etel: Etel){
+    this.etelService.deleteEtel(etel.EtelID).subscribe(response => {
+      console.log(response);
+      this.etelekLekerese();    
+    });
+  }
 
   submit(form: FormGroup) {
-    console.log(form.get('kategoria').value);
-    console.log(form.get('allergenek').value);
 
     let hozzaadas = {
 
       Nev: form.get('nev').value,
       Ar: form.get('ar').value,
-      Kep: 'not yet',
+      Kep: form.get('etelKep').value,
       Leiras: form.get('leiras').value,
       EtteremID: this.etteremId,
       Idoszak: {
@@ -119,12 +125,14 @@ export class EtelekComponent implements OnInit {
       Cimke: [+form.get('kategoria').value]
     }
     if(form.get('allergenek').value != null){
-      hozzaadas.Cimke.push(form.get('allergenek').value);
+      form.get('allergenek').value.forEach(element => {
+        hozzaadas.Cimke.push(element);  
+      });
     }
 
     console.log(hozzaadas);
 
-
+    
     this.etelService.etelHozzadas(hozzaadas).subscribe(response => {
       console.log(response);
       this.etelekLekerese();
